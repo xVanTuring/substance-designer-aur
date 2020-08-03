@@ -1,0 +1,50 @@
+post_install(){
+    chmod 755 -R /opt/Allegorithmic/*
+    ln -sf "/opt/Allegorithmic/Substance_Designer/Substance Designer" /usr/local/bin/substancedesigner
+    install_icons(){
+        src_pattern=$1
+        icon_name=$2
+        context=$3
+        for icon in `find "/opt/Allegorithmic/Substance_Designer/resources/icons/" -name "${src_pattern}"`
+        do
+          size=(${icon//x/ })
+          size=${size[-1]}
+          size=${size//.png/}
+          xdg-icon-resource install --noupdate --context ${context} --size ${size} "${icon}" "${icon_name}"
+        done
+    }
+  install_icons "substance-*.png" "allegorithmic-Substance_Designer" apps
+  install_icons "sbs-*.png" "application-x.allegorithmic.package" mimetypes
+  install_icons "sbsar-*.png" "application-x.allegorithmic.substance" mimetypes
+  xdg-icon-resource forceupdate
+
+  xdg-desktop-menu install "/opt/Allegorithmic/Substance_Designer/resources/allegorithmic-Substance_Designer.desktop"
+  xdg-mime install "/opt/Allegorithmic/Substance_Designer/resources/allegorithmic-x.allegorithmic.xml"
+}
+pre_remove(){
+  uninstall_icons(){
+    src_pattern=$1
+    icon_name=$2
+    context=$3
+    for icon in `find "/opt/Allegorithmic/Substance_Designer/resources/icons/" -name "${src_pattern}"`
+    do
+      size=(${icon//x/ })
+      size=${size[-1]}
+      size=${size//.png/}
+      xdg-icon-resource uninstall --noupdate --context ${context} --size ${size} "${icon_name}"
+    done
+  }
+  uninstall_icons "substance-*.png" "allegorithmic-Substance_Designer" apps
+  uninstall_icons "sbs-*.png" "application-x.allegorithmic.package" mimetypes
+  uninstall_icons "sbsar-*.png" "application-x.allegorithmic.substance" mimetypes
+  xdg-icon-resource forceupdate
+
+  xdg-mime uninstall "/opt/Allegorithmic/Substance_Designer/resources/allegorithmic-x.allegorithmic.xml"
+  xdg-desktop-menu uninstall "/opt/Allegorithmic/Substance_Designer/resources/allegorithmic-Substance_Designer.desktop"
+}
+post_remove(){
+  ln_target=`readlink /usr/local/bin/substancedesigner`
+  if [ "${ln_target}" = "/opt/Allegorithmic/Substance_Designer/Substance Designer" ] ; then
+    rm /usr/local/bin/substancedesigner
+  fi
+}
