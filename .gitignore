@@ -1,4 +1,4 @@
 pkg
 src
 Substance_Designer-10.1.3-3687-linux-x64-standard.rpm
-substance-designer-10.1.3-1-x86_64.pkg.tar.zst
+*.tar.zst

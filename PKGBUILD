@@ -2,14 +2,14 @@
 
 pkgname=substance-designer
 pkgver=10.1.3
-pkgrel=1
+pkgrel=2
 _build=3687
 install='substance-designer.install'
 pkgdesc="Node-based, non-destructive PBR material authoring tool."
 arch=('x86_64')
 url='https://www.allegorithmic.com/products/substance-designer'
 license=('custom')
-depends=('fontconfig' 'gcc-libs-multilib' 'glu' 'hicolor-icon-theme' 'libtiff4')
+depends=('xdg-utils' 'fontconfig' 'gcc-libs-multilib' 'glu' 'hicolor-icon-theme' 'libtiff4')
 options=('!strip')
 source=("https://download.substance3d.com/substance-designer/10.x/Substance_Designer-${pkgver}-${_build}-linux-x64-standard.rpm"
         'mime.patch'
